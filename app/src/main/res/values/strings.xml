@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">EWC</string>
+    <string name="app_main">뇌파로 휠체어</string>
+    <string name="log_id">아이디</string>
+    <string name="id_text">아이디를 입력해주세요</string>
+    <string name="log_pw">비밀번호</string>
+    <string name="pw_text">비밀번호를 입력해주세요</string>
+    <string name="auto_log">자동 로그인</string>
+    <string name="log_btn">로그인</string>
+    <string name="sign_btn">회원가입</string>
+    <string name="protect_btn">보호자 회원가입</string>
+    <string name="sign_id_text">등록할 아이디 입력</string>
+    <string name="sign_pw_text">등록할 비밀번호 입력</string>
+    <string name="sign_phone">사용자 전화번호 입력</string>
+    <string name="sign_phone_text">  사용자\n전화번호</string>
+    <string name="user_ID">사용자 아이디</string>
+    <string name="user_ID_text">사용자의 아이디 입력</string>
+    <string name="pro_ID">보호자 아이디</string>
+    <string name="pro_phone">  보호자\n전화번호</string>
+    <string name="pro_phone_text">보호자 전화번호 입력</string>
+</resources>
