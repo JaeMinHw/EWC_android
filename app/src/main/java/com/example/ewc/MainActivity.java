@@ -44,6 +44,20 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        signup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SignUp();
+            }
+        });
+
+        prosignup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                proSignUp();
+            }
+        });
+
     }
 
     protected void Login() {
@@ -107,6 +121,8 @@ public class MainActivity extends AppCompatActivity {
                             // 서버에서 success를 반환한 경우
                             // 로그인 성공
                             Log.d("MainActivity", "서버에서 success를 반환했습니다.");
+                            // 사용자인지 보호자인지 확인 후 해당하는 화면으로 이동.
+                            
 
                         } else {
                             // 다른 응답을 반환한 경우

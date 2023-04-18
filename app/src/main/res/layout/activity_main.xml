@@ -79,7 +79,7 @@
         android:layout_marginEnd="80dp"
         android:background="@drawable/radius_button"
         android:backgroundTint="@color/btn_color"
-        android:onClick="SignUp"
+
         android:text="@string/sign_btn"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
@@ -93,7 +93,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="132dp"
         android:background="@drawable/radius_button"
-        android:onClick="proSignUp"
         android:text="@string/protect_btn"
         android:textColor="#FFFFFF"
         android:textSize="20sp"

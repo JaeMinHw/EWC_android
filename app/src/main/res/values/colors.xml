@@ -9,4 +9,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="btn_color">#FF2678F3</color>
     <color name="btn_text">#9A8F8F</color>
+    <color name="error">#FFFF0202</color>
+    <color name="success">#FF4585F7</color>
 </resources>

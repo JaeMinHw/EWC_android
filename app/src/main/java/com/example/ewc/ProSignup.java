@@ -7,6 +7,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class ProSignup extends AppCompatActivity {
@@ -16,8 +17,12 @@ public class ProSignup extends AppCompatActivity {
     private EditText PW;
     private EditText phone;
 
+    private TextView check_user;
 
-    private int check = 0;
+    private int check=0;
+
+
+
 
 
     @Override
@@ -28,26 +33,43 @@ public class ProSignup extends AppCompatActivity {
         proid = findViewById(R.id.proID);
         PW = findViewById(R.id.PW);
         phone = findViewById(R.id.Phone_text);
+        check_user = findViewById(R.id.check_user_id);
 
 
         userid.addTextChangedListener(new TextWatcher() {
+            int check = 0;
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 // TODO Auto-generated method stub
                 //텍스트가 변경 될때마다 Call back
                 // 그러면 변경 될때마다 서버로 아이디 전송하고 있는 아이디인지, 보호자 등록이 안된 사용자인지 확인 후 결과 반환
-
+                // 만약 끝냈는데 없는 아이디이거나, 보호자 등록이 되어있는 사용자인 경우 다시 입력하게 시키기
                 String check_id = userid.getText().toString();
-                Log.e("test",check_id);
+
+
+
+
 
                 // 서버에 입력된 아이디를 보내고 조건에 맞는 아이디가 있으면 check는 1로 변환
                 String user = "check";
-
-                if(check_id == user) {
+                if(check_id.equals(user)) {
                     check = 1;
                 }
-                else {
+                else if(!check_id.equals(user)) {
                     check = 0;
+                }
+
+                if(check == 1) {
+                    check_user.setText(getResources().getString(R.string.check_du1));
+                    check_user.setTextColor(getResources().getColor(R.color.success));
+                }
+                else if(check_id.length()==0){
+                    check_user.setText("");
+                }
+
+                else  {
+                    check_user.setText(getResources().getString(R.string.check_du));
+                    check_user.setTextColor(getResources().getColor(R.color.error));
                 }
 
 
@@ -58,13 +80,8 @@ public class ProSignup extends AppCompatActivity {
                                           int after) {
                 // TODO Auto-generated method stub
                 //텍스트 입력이 모두 끝았을때 Call back
-                // 만약 끝냈는데 없는 아이디이거나, 보호자 등록이 되어있는 사용자인 경우 다시 입력하게 시키기
-                if(check == 1) {
-                    Log.e("check","test");
-                }
-                else {
-                    Log.e("check","try again");
-                }
+
+
             }
 
             @Override
