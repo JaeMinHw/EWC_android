@@ -21,8 +21,11 @@
         <activity
             android:name=".pro_cam"
             android:exported="false" />
+         <activity
+         android:name=".pro_map"
+         android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".pro_choose"
             android:exported="false" />
         <activity
             android:name=".ProSignup"
@@ -31,7 +34,7 @@
             android:name=".SignUp"
             android:exported="true" />
         <activity
-            android:name=".pro_map"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
