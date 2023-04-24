@@ -19,11 +19,14 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".user_con"
+            android:exported="false" />
+        <activity
             android:name=".pro_cam"
             android:exported="false" />
-         <activity
-         android:name=".pro_map"
-         android:exported="false" />
+        <activity
+            android:name=".pro_map"
+            android:exported="false" />
         <activity
             android:name=".pro_choose"
             android:exported="false" />

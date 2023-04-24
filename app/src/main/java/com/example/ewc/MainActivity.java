@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
     protected void SignUp() {
-        Intent intent = new Intent(getApplicationContext(), SignUp.class);
+        Intent intent = new Intent(getApplicationContext(), user_con.class);
         startActivity(intent);
     }
     protected void proSignUp() {

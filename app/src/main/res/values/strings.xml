@@ -23,4 +23,6 @@
     <string name="call">전화걸기</string>
     <string name="check_place">사용자 위치 확인</string>
     <string name="user_video">사용자 시야 확인</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
 </resources>

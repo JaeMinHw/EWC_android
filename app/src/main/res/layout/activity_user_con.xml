@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".user_con">
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="125dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center_horizontal">
+
+            <RelativeLayout
+                android:id="@+id/middlerect"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:background="@color/Red">
+
+                <View
+                    android:id="@+id/view1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:background="@color/White" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/leftuprect"
+                android:layout_width="50dp"
+                android:layout_height="75dp"
+                android:layout_alignBottom="@+id/middlerect"
+                android:layout_toLeftOf="@+id/middlerect"
+                android:background="@color/White">
+
+                <View
+                    android:id="@+id/view2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:background="@color/Red" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rightbottomrect"
+                android:layout_width="50dp"
+                android:layout_height="75dp"
+                android:layout_alignTop="@+id/middlerect"
+                android:layout_toRightOf="@+id/middlerect"
+                android:background="@color/White">
+
+                <View
+                    android:id="@+id/view3"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:background="@color/Red" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rightuprect"
+                android:layout_width="75dp"
+                android:layout_height="50dp"
+                android:layout_above="@+id/middlerect"
+                android:layout_alignLeft="@+id/middlerect"
+                android:background="@color/White">
+
+                <View
+                    android:id="@+id/view4"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:background="@color/Red" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/leftbottomrect"
+                android:layout_width="75dp"
+                android:layout_height="50dp"
+                android:layout_below="@+id/middlerect"
+                android:layout_toLeftOf="@+id/rightbottomrect"
+                android:background="@color/White">
+
+                <View
+                    android:id="@+id/view5"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:background="@color/Red" />
+            </RelativeLayout>
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="125dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center_horizontal">
+
+            <RelativeLayout
+                android:id="@+id/middlerect2"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:background="@color/Red">
+
+                <View
+                    android:id="@+id/view21"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:background="@color/White" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/leftuprect2"
+                android:layout_width="50dp"
+                android:layout_height="75dp"
+                android:layout_alignBottom="@+id/middlerect2"
+                android:layout_toLeftOf="@+id/middlerect2"
+                android:background="@color/White">
+
+                <View
+                    android:id="@+id/view22"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:background="@color/Red" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rightbottomrect2"
+                android:layout_width="50dp"
+                android:layout_height="75dp"
+                android:layout_alignTop="@+id/middlerect2"
+                android:layout_toRightOf="@+id/middlerect2"
+                android:background="@color/White">
+
+                <View
+                    android:id="@+id/view23"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:background="@color/Red" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rightuprect2"
+                android:layout_width="75dp"
+                android:layout_height="50dp"
+                android:layout_above="@+id/middlerect2"
+                android:layout_alignLeft="@+id/middlerect2"
+                android:background="@color/White">
+
+                <View
+                    android:id="@+id/view24"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:background="@color/Red" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/leftbottomrect2"
+                android:layout_width="75dp"
+                android:layout_height="50dp"
+                android:layout_below="@+id/middlerect2"
+                android:layout_toLeftOf="@+id/rightbottomrect2"
+                android:background="@color/White">
+
+                <View
+                    android:id="@+id/view25"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:background="@color/Red" />
+            </RelativeLayout>
+
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/control"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Start"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
