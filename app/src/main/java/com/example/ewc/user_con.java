@@ -8,8 +8,6 @@ import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
@@ -33,6 +31,9 @@ public class user_con extends AppCompatActivity {
     private View view21,view22,view23,view24,view25;
     final int freq2 = 5000/70;
 
+    // test
+    private View view;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +53,13 @@ public class user_con extends AppCompatActivity {
         view23 = (View) findViewById(R.id.view23);
         view24 = (View) findViewById(R.id.view24);
         view25 = (View) findViewById(R.id.view25);
+
+
+        view = (View) findViewById(R.id.view1);
+
+        Integer colorFrom1 = Color.BLUE;
+        Integer colorTo1 = Color.WHITE;
+
 
 
 
@@ -156,22 +164,22 @@ public class user_con extends AppCompatActivity {
     }
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.brain_input_main, menu);
-        return true;
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.brain_input_main, menu);
+//        return true;
+//    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//        int id = item.getItemId();
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
 }
