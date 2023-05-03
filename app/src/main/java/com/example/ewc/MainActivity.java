@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
     protected void SignUp() {
-        Intent intent = new Intent(getApplicationContext(), pro_cam.class);
+        Intent intent = new Intent(getApplicationContext(), User_controller.class);
         startActivity(intent);
     }
     protected void proSignUp() {

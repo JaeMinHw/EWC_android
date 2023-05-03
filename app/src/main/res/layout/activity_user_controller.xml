@@ -22,7 +22,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:rotation="90"
-        app:tint="@color/white"
         app:srcCompat="?attr/actionModeCloseDrawable"
         tools:layout_editor_absoluteX="132dp"
         tools:layout_editor_absoluteY="14dp" />
@@ -58,7 +57,6 @@
         app:layout_constraintTop_toBottomOf="@+id/view2"
         app:layout_constraintVertical_bias="0.07"
         android:rotation="-90"
-        app:tint="@color/white"
         app:srcCompat="?attr/actionModeCloseDrawable"
         tools:layout_editor_absoluteX="158dp"
         tools:layout_editor_absoluteY="465dp"/>
@@ -76,7 +74,6 @@
         app:layout_constraintStart_toEndOf="@+id/view2"
         app:layout_constraintTop_toTopOf="parent"
         android:rotationY="180"
-        app:tint="@color/white"
         app:srcCompat="?attr/actionModeCloseDrawable"
         tools:layout_editor_absoluteX="33dp"
         tools:layout_editor_absoluteY="16dp"/>
@@ -89,7 +86,6 @@
         android:layout_centerVertical="true"
         android:layout_marginEnd="32dp"
         android:background="@color/black"
-        app:tint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/view2"
         app:layout_constraintStart_toStartOf="parent"

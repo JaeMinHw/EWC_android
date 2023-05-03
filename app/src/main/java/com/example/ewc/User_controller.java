@@ -60,11 +60,11 @@ public class User_controller extends AppCompatActivity {
                 Log.e("tttttt",""+Integer.parseInt(animator.getAnimatedValue().toString())) ;
                 if(Integer.parseInt(animator.getAnimatedValue().toString()) == -1){
                     view1.setColorFilter(R.color.black);
-                    Log.e("color","White   " + animator.getAnimatedValue());
+//                    Log.e("color","White   " + animator.getAnimatedValue());
                 }
                 else {
                     view1.setColorFilter(R.color.white);
-                    Log.e("color","Black    " + animator.getAnimatedValue());
+//                    Log.e("color","Black    " + animator.getAnimatedValue());
                 }
 
             }
