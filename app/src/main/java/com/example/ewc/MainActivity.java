@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
     protected void proSignUp() {
-        Intent intent = new Intent(getApplicationContext(), ProSignup.class);
+        Intent intent = new Intent(getApplicationContext(), pro_map.class);
         startActivity(intent);
     }
 
