@@ -32,6 +32,8 @@ public class pro_map extends AppCompatActivity implements OnMapReadyCallback {
     double latitude ;
     double longitude;
 
+    int map_type = 2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,12 +41,24 @@ public class pro_map extends AppCompatActivity implements OnMapReadyCallback {
 
         textView = findViewById(R.id.textView7);
 
-
+        Button map_change = findViewById(R.id.button);
         mapView = findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
 
         // 서버에 해당 사용자의 위치 요청 후 받기.
+        map_change.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+                if(map_type ==0) {
+                    map_type =1;
+                }
+                else  {
+                    map_type =0;
+                }
+                naverMapBasicSettings();
+            }
+        });
         naverMapBasicSettings();
 
         startLocationService();
@@ -62,14 +76,20 @@ public class pro_map extends AppCompatActivity implements OnMapReadyCallback {
 
         uiSettings.setLocationButtonEnabled(false);
 
+        if(map_type == 0) {
+            naverMap.setMapType(NaverMap.MapType.Hybrid);
+        }
+        else {
+            naverMap.setMapType(NaverMap.MapType.Basic);
+        }
+
         // 지도 유형 위성사진으로 설정
-        naverMap.setMapType(NaverMap.MapType.Basic);
         Marker marker = new Marker();
         marker.setPosition(new LatLng(latitude, longitude));
         marker.setMap(naverMap);
 
         CameraUpdate cameraUpdate = CameraUpdate.scrollAndZoomTo(
-                        new LatLng(latitude, longitude),17)
+                        new LatLng(latitude, longitude),15)
                 .animate(CameraAnimation.Fly, 3000);
 
         naverMap.moveCamera(cameraUpdate);

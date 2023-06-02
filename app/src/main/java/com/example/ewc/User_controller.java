@@ -1,7 +1,15 @@
 package com.example.ewc;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import android.animation.AnimatorSet;
@@ -13,10 +21,33 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
-public class User_controller extends AppCompatActivity {
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.UnknownHostException;
+import java.util.concurrent.ExecutionException;
+
+public class User_controller extends AppCompatActivity implements SensorEventListener {
 
     send_control sc = new send_control();
+
+    private long lastUpdate = 0;
+    private float last_x, last_y, last_z;
+    private int COLLISION_THRESHOLD = 25000;  // 충돌 임계값
+
+    private static SensorManager mSensorManager;
+    private Sensor mAccelerometer; // 가속도 센스
+    private Sensor mMagnetometer; // 자력계 센스
+    float[] mGravity = null;
+    float[] mGeomagnetic = null;
+    String resultText = "";
+
+
 
     private ImageView view1,view2,view3,view4,view5;
 
@@ -50,6 +81,19 @@ public class User_controller extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_controller);
+
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        mAccelerometer = mSensorManager
+                .getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
+        mMagnetometer = mSensorManager
+                .getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+
+//        // 활동 퍼미션 체크
+//        if(ContextCompat.checkSelfPermission(this,
+//                Manifest.permission.ACTIVITY_RECOGNITION) == PackageManager.PERMISSION_DENIED){
+//
+//            requestPermissions(new String[]{Manifest.permission.ACTIVITY_RECOGNITION}, 0);
+//        }
 
         view1 = (ImageView) findViewById(R.id.view1);
         view2 = (ImageView) findViewById(R.id.view2);
@@ -206,4 +250,118 @@ public class User_controller extends AppCompatActivity {
     }
 
 
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+
+        if (event.sensor.getType() == Sensor.TYPE_LINEAR_ACCELERATION) {
+            mGravity = event.values;
+        }
+
+        if (event.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
+            mGeomagnetic = event.values;
+        }
+
+
+        // 걸음 센서 이벤트 발생시
+
+        Sensor mySensor = event.sensor;
+        if(mySensor.getType() == Sensor.TYPE_LINEAR_ACCELERATION) {
+
+            float x = event.values[0];
+            float y = event.values[1];
+            float z = event.values[2];
+
+            long curTime = System.currentTimeMillis(); // 현재시간
+
+
+            // 0.1초 간격으로 가속도값을 업데이트
+            if ((curTime - lastUpdate) > 100) {
+                long diffTime = (curTime - lastUpdate);
+                lastUpdate = curTime;
+
+                // 내가 마음대로 정한 충돌량
+                double collision_detect = Math.sqrt(Math.pow(z - last_z, 2) * 100 + Math.pow(x - last_x, 2) * 10 + Math.pow(y - last_y, 2) * 10) / diffTime * 10000;
+
+
+                if (collision_detect > COLLISION_THRESHOLD) {
+                    //지정된 수치이상 흔들림이 있으면 실행
+                    Toast.makeText(this, "충돌!!", Toast.LENGTH_SHORT).show();
+                    try {
+                        resultText = new Task1().execute().get();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    Log.e("result",resultText);
+                }
+                //갱신
+                last_x = x;
+                last_y = y;
+                last_z = z;
+            }
+
+
+            if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+                mGravity = event.values;
+            }
+
+            if (event.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
+                mGeomagnetic = event.values;
+            }
+
+        }
+
+    }
+
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+    }
+
+}
+
+class Task1 extends AsyncTask<String, Void, String> {
+
+    private String str, receiveMsg;
+    @Override
+    protected String doInBackground(String... params) {
+        URL url;
+        try {
+            url = new URL("http://"); // 마지막에는 / 넣지 말기
+
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
+
+
+            if (conn.getResponseCode() == conn.HTTP_OK) {
+                InputStreamReader tmp = new InputStreamReader(conn.getInputStream(), "UTF-8");
+                BufferedReader reader = new BufferedReader(tmp);
+                StringBuffer buffer = new StringBuffer();
+                while ((str = reader.readLine()) != null) {
+                    buffer.append(str);
+                }
+                receiveMsg = buffer.toString();
+                Log.e("receiveMsg : ", receiveMsg);
+
+                reader.close();
+            }
+            else if(conn.getResponseCode() == 404) {
+                Log.e("Mytag","what");
+            }
+            else {
+                Log.e("결과", conn.getResponseCode() + "Error");
+            }
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (UnknownHostException e) {
+            Log.e("Mytag","내용: "+e.getMessage());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return receiveMsg;
+    }
 }
