@@ -112,7 +112,6 @@
         android:layout_marginTop="128dp"
         android:background="@drawable/radius_button"
         android:backgroundTint="@color/btn_color"
-        android:onClick="checkSignUp"
         android:text="@string/sign_btn"
         android:textColor="#FFFFFF"
         android:textSize="20sp"

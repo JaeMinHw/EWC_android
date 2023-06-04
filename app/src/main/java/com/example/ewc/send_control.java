@@ -11,7 +11,7 @@ import java.net.URL;
 
 public class send_control extends Thread{
     public int move(String movement) {
-        String mUrl = "http://43.200.191.244:5000/brain_wave/"+movement;
+        String mUrl = "http://43.200.191.244:5000/user_place/"+"brain_wave/"+movement;
 
         try {
             URL url = new URL(mUrl);

@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
@@ -23,6 +24,15 @@ import com.naver.maps.map.NaverMap;
 import com.naver.maps.map.OnMapReadyCallback;
 import com.naver.maps.map.UiSettings;
 import com.naver.maps.map.overlay.Marker;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 public class pro_map extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -44,6 +54,8 @@ public class pro_map extends AppCompatActivity implements OnMapReadyCallback {
         Button map_change = findViewById(R.id.button);
         mapView = findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
+        place_Task2 pt = new place_Task2();
+        pt.start();
 
         // 서버에 해당 사용자의 위치 요청 후 받기.
         map_change.setOnClickListener(new View.OnClickListener() {
@@ -61,7 +73,6 @@ public class pro_map extends AppCompatActivity implements OnMapReadyCallback {
         });
         naverMapBasicSettings();
 
-        startLocationService();
 
     }
 
@@ -102,51 +113,63 @@ public class pro_map extends AppCompatActivity implements OnMapReadyCallback {
     }
 
 
+    // 사용자 위치 전송 thread
+    class place_Task2 extends Thread {
+
+        private String str, receiveMsg;
+
+        public void run() {
+            try {
+                URL url = new URL(server_link.link+"place/pro/"+login_info.id);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                if(conn != null){
+                    conn.setConnectTimeout(10000); // 10초 동안 기다린 후 응답이 없으면 종료
+                    conn.setRequestMethod("GET");
+                    conn.setDoInput(true);
+
+                    int resCode = conn.getResponseCode();
+
+                    if(resCode == HttpURLConnection.HTTP_OK){
+                        BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                        StringBuilder response = new StringBuilder();
+                        String line;
+                        while ((line = in.readLine()) != null) {
+                            response.append(line);
+                        }
+                        in.close();
+
+                        // 응답 데이터 처리
+                        String responseData = response.toString();
+
+                        Log.e("plcae",responseData);
 
 
+                        try{
+                            JSONObject jarray = new JSONObject(responseData);
+
+                            for(int i = 0; i< jarray.length(); i++)
+                            {
+                                latitude = jarray.getDouble("latitude");
+                                longitude= jarray.getDouble("longitude");
+
+                                Log.e("tt",""+latitude);
 
 
+                            }
+                        }catch (JSONException e){
+                            e.printStackTrace();
+                        }
 
 
-
-    public void startLocationService() {
-        LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
-        try {
-            Location location = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            if(location != null) {
-                latitude = location.getLatitude();
-                longitude = location.getLongitude();
-                String message = "최근 위치 -> Latitude : " + latitude + "\nLongitude:" + longitude;
-
-                textView.setText(message);
-                marker.setPosition(new LatLng(latitude, longitude));
-
-//                naverMap.setLocationSource(mLocationSource);
+                    }
+                    conn.disconnect();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-
-            GPSListener gpsListener = new GPSListener();
-            long minTime = 10000;
-            float minDistance = 0;
-
-            manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTime, minDistance, gpsListener);
-            Toast.makeText(getApplicationContext(),"내 위치 확인 요청항",Toast.LENGTH_SHORT).show();
-        }catch(SecurityException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-
-    class GPSListener implements LocationListener {
-        public void onLocationChanged(Location location) {
-            latitude = location.getLatitude();
-            longitude = location.getLongitude();
-
-            String message = "내 위치 -> Latitude : " + latitude + "\nLongitude:" + longitude;
-            Log.e("tt",message);
         }
 
     }
+
 
 }

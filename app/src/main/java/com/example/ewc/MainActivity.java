@@ -80,22 +80,22 @@ public class MainActivity extends AppCompatActivity {
 
     }
     protected void SignUp() {
-        Intent intent = new Intent(getApplicationContext(), User_controller.class);
+        Intent intent = new Intent(getApplicationContext(), SignUp.class);
         startActivity(intent);
     }
     protected void proSignUp() {
-        Intent intent = new Intent(getApplicationContext(), pro_map.class);
+        Intent intent = new Intent(getApplicationContext(), ProSignup.class);
         startActivity(intent);
     }
 
 
     class RequestThread extends Thread {
 
-//        String IP = "아이피 주소 + 포트 + / 서버에 전송하는 규칙" + "tt";
-        String IPadd = "http://54.180.101.143:5001/";
-        String IP = IPadd + "login/"+id_value+"/"+pw_value;
+        String IP = server_link.link + "login/"+id_value+"/"+pw_value;
+
         @Override
         public void run() {
+            Log.e("IP",""+IP);
             try {
                 URL url = new URL(IP);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -117,14 +117,27 @@ public class MainActivity extends AppCompatActivity {
 
                         // 응답 데이터 처리
                         String responseData = response.toString();
-                        if (responseData.equals("success")) {
-                            // 서버에서 success를 반환한 경우
-                            // 로그인 성공
-                            Log.d("MainActivity", "서버에서 success를 반환했습니다.");
-                            // 사용자인지 보호자인지 확인 후 해당하는 화면으로 이동.
-                            
+                        if (responseData.equals("user")) {
+                            // 서버에서 user 반환한 경우
+                            // user 로그인 성공
+                            Log.d("MainActivity", "서버에서 user 반환했습니다.");
 
-                        } else {
+                            login_info.id = id_value;
+
+
+                            // 사용자 화면으로 이동.
+                            Intent intent = new Intent(getApplicationContext(), User_controller.class);
+                            startActivity(intent);
+
+                        }
+                        else if(responseData.equals("pro")) {
+                            Log.d("MainActivity","서버에서 pro를 반환했습니다");
+                            login_info.id = id_value;
+                            // pro 화면으로
+                            Intent intent = new Intent(getApplicationContext(), pro_choose.class);
+                            startActivity(intent);
+                        }
+                        else {
                             // 다른 응답을 반환한 경우
                             // 로그인 실패
                             Toast.makeText(MainActivity.this, "아이디와 비밀번호를 확인하여주세요", Toast.LENGTH_SHORT).show();
