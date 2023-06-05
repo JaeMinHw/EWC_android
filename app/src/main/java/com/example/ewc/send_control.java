@@ -11,7 +11,7 @@ import java.net.URL;
 
 public class send_control extends Thread{
     public int move(String movement) {
-        String mUrl = "http://43.200.191.244:5000/user_place/"+"brain_wave/"+movement;
+        String mUrl = server_link.link+"brain_wave/"+movement;
 
         try {
             URL url = new URL(mUrl);
@@ -34,7 +34,7 @@ public class send_control extends Thread{
 
                     // 응답 데이터 처리
                     String responseData = response.toString();
-                    if (responseData.equals("success")) {
+                    if (responseData.equals("success"+movement)) {
                         // 서버에서 success를 반환한 경우
                         // 로그인 성공
                         Log.d("MainActivity", "서버에서 success를 반환했습니다.");

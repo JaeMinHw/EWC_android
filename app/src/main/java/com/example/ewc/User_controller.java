@@ -2,9 +2,7 @@ package com.example.ewc;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.hardware.Sensor;
@@ -14,7 +12,6 @@ import android.hardware.SensorManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
 
 import android.animation.AnimatorSet;
@@ -22,26 +19,24 @@ import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.graphics.Color;
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.naver.maps.geometry.LatLng;
-
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.UnknownHostException;
+import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.ExecutionException;
 
-public class User_controller extends AppCompatActivity implements SensorEventListener {
+public class User_controller extends AppCompatActivity implements SensorEventListener{
 
     send_control sc = new send_control();
 
@@ -62,14 +57,21 @@ public class User_controller extends AppCompatActivity implements SensorEventLis
 
     // 위치 관리자 객체 참조하기
 
+    String s;
 
-    private ImageView view1, view2, view3, view4, view5;
+    private TextToSpeech tts;
+
+
+    private ImageView view, view1, view2, view3, view4, view5, view6;
 
 
     private AnimatorSet animatorSet;
     private Button controlBTN;
     private boolean controlFlag = true;
     private Activity activity = this;
+
+    // turn left
+    private ValueAnimator colorAnimationOuter;
 
     // go
     private ValueAnimator colorAnimationOuter1;
@@ -86,16 +88,23 @@ public class User_controller extends AppCompatActivity implements SensorEventLis
     // left
     private ValueAnimator colorAnimationOuter5;
 
+    // turn right
+    private ValueAnimator colorAnimationOuter6;
+
     final int go = 500; // 한번 바뀌는데 걸리는 시간 즉 흰색에서 파란색으로 될 때까지의 시간이 500ms
     final int back = 600;
     final int left = 400;
     final int right = 300;
     final int stop = 200;
+    final int turn_left = 800;
+    final int turn_right = 700;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_controller);
+
+//        tts = new TextToSpeech(this, this);
 
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         mAccelerometer = mSensorManager
@@ -110,14 +119,33 @@ public class User_controller extends AppCompatActivity implements SensorEventLis
 //            requestPermissions(new String[]{Manifest.permission.ACTIVITY_RECOGNITION}, 0);
 //        }
 
-        view1 = (ImageView) findViewById(R.id.view1);
-        view2 = (ImageView) findViewById(R.id.view2);
-        view3 = (ImageView) findViewById(R.id.view3);
-        view4 = (ImageView) findViewById(R.id.view4);
-        view5 = (ImageView) findViewById(R.id.view5);
+        view = (ImageView) findViewById(R.id.view); // turn left
+        view1 = (ImageView) findViewById(R.id.view1); // go
+        view2 = (ImageView) findViewById(R.id.view2); // stop
+        view3 = (ImageView) findViewById(R.id.view3); // back
+        view4 = (ImageView) findViewById(R.id.view4); // right
+        view5 = (ImageView) findViewById(R.id.view5); // left
+        view6 = (ImageView) findViewById(R.id.view6);
 
         Integer colorFrom = Color.BLACK;
         Integer colorTo = Color.WHITE;
+
+
+        colorAnimationOuter = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
+        colorAnimationOuter.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+
+            @Override
+            public void onAnimationUpdate(ValueAnimator animator) {
+                view.setBackgroundColor((Integer) animator.getAnimatedValue());
+                if (Integer.parseInt(animator.getAnimatedValue().toString()) == -1) {
+                    view.setColorFilter(R.color.black);
+                } else {
+                    view.setColorFilter(R.color.white);
+                }
+
+            }
+
+        });
 
 
         colorAnimationOuter1 = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
@@ -205,6 +233,28 @@ public class User_controller extends AppCompatActivity implements SensorEventLis
             }
 
         });
+
+
+        colorAnimationOuter6 = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
+        colorAnimationOuter6.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+
+            @Override
+            public void onAnimationUpdate(ValueAnimator animator) {
+                view6.setBackgroundColor((Integer) animator.getAnimatedValue());
+                if (Integer.parseInt(animator.getAnimatedValue().toString()) == -1) {
+                    view6.setColorFilter(R.color.black);
+                } else {
+                    view6.setColorFilter(R.color.white);
+                }
+
+            }
+
+        });
+
+        colorAnimationOuter.setRepeatCount(ValueAnimator.INFINITE);
+        colorAnimationOuter.setRepeatMode(ValueAnimator.REVERSE);
+        colorAnimationOuter.setDuration(turn_left);
+
         colorAnimationOuter1.setRepeatCount(ValueAnimator.INFINITE);
         colorAnimationOuter1.setRepeatMode(ValueAnimator.REVERSE);
         colorAnimationOuter1.setDuration(go);
@@ -225,9 +275,13 @@ public class User_controller extends AppCompatActivity implements SensorEventLis
         colorAnimationOuter5.setRepeatMode(ValueAnimator.REVERSE);
         colorAnimationOuter5.setDuration(left);
 
+        colorAnimationOuter6.setRepeatCount(ValueAnimator.INFINITE);
+        colorAnimationOuter6.setRepeatMode(ValueAnimator.REVERSE);
+        colorAnimationOuter6.setDuration(turn_right);
+
         // @TODO animation set
         animatorSet = new AnimatorSet();
-        animatorSet.playTogether(colorAnimationOuter1, colorAnimationOuter2, colorAnimationOuter3, colorAnimationOuter4, colorAnimationOuter5
+        animatorSet.playTogether(colorAnimationOuter,colorAnimationOuter1, colorAnimationOuter2, colorAnimationOuter3, colorAnimationOuter4, colorAnimationOuter5,colorAnimationOuter6
         );
 
         animatorSet.start();
@@ -285,6 +339,8 @@ public class User_controller extends AppCompatActivity implements SensorEventLis
         timerCall.schedule(timerTask,1000,5000);
 
 
+
+
     }
 
     @Override
@@ -295,6 +351,42 @@ public class User_controller extends AppCompatActivity implements SensorEventLis
 
         timerCall.cancel();
     }
+
+
+//    @Override
+//    public void onInit(int status) {
+//        if (status == TextToSpeech.SUCCESS) {
+//            int language = tts.setLanguage(Locale.KOREAN);
+//
+//            if (language == TextToSpeech.LANG_MISSING_DATA || language == TextToSpeech.LANG_NOT_SUPPORTED) {
+//                Toast.makeText(this, "지원하지 않는 언어입니다.", Toast.LENGTH_SHORT).show();
+//            } else {
+//                try {
+//                    speakOutNow();
+//                } catch (IOException e) {
+//                    throw new RuntimeException(e);
+//                }
+//            }
+//        } else {
+//            Toast.makeText(this, "TTS 실패!", Toast.LENGTH_SHORT).show();
+//        }
+//    }
+
+    //Speak out...
+    private void speakOutNow() throws IOException {
+        InputStream in = getResources().openRawResource(R.raw.read_text);
+        byte[] b = new byte[in.available()];
+
+        in.read(b);
+        s = new String(b);
+        Log.e("test",s);
+
+        String text = s;
+        //tts.setPitch((float) 0.1); //음량
+        //tts.setSpeechRate((float) 0.5); //재생속도
+        tts.speak(text, TextToSpeech.QUEUE_FLUSH, null);
+    }
+
 
 
 
@@ -334,6 +426,22 @@ public class User_controller extends AppCompatActivity implements SensorEventLis
         new Thread() {
             public void run() {
                 sc.move("stop");
+            }
+        }.start();
+    }
+
+    public void turn_left(View view) {
+        new Thread() {
+            public void run() {
+                sc.move("Turning_left");
+            }
+        }.start();
+    }
+
+    public void turn_right(View view) {
+        new Thread() {
+            public void run() {
+                sc.move("Turning_right");
             }
         }.start();
     }
@@ -378,7 +486,8 @@ public class User_controller extends AppCompatActivity implements SensorEventLis
                     Task1 crash = new Task1();
                     crash.start();
 
-                }
+
+               }
                 //갱신
                 last_x = x;
                 last_y = y;
@@ -520,4 +629,7 @@ class Task1 extends Thread {
         }
     }
 
+
 }
+
+
