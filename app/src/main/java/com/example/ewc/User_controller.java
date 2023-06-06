@@ -1,5 +1,6 @@
 package com.example.ewc;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
@@ -62,13 +63,18 @@ public class User_controller extends AppCompatActivity implements SensorEventLis
     private TextToSpeech tts;
 
 
-    private ImageView view, view1, view2, view3, view4, view5, view6;
+
+    private ImageView[] imgView = new ImageView[7];
+    private Integer[] imgView_id= {R.id.view, R.id.view1, R.id.view2, R.id.view3, R.id.view4, R.id.view5, R.id.view6};
 
 
     private AnimatorSet animatorSet;
     private Button controlBTN;
     private boolean controlFlag = true;
     private Activity activity = this;
+
+
+    private ValueAnimator[] vaAni = new ValueAnimator[7];
 
     // turn left
     private ValueAnimator colorAnimationOuter;
@@ -99,6 +105,8 @@ public class User_controller extends AppCompatActivity implements SensorEventLis
     final int turn_left = 800;
     final int turn_right = 700;
 
+    Integer ord[] = {turn_left,go,stop,back,right,left,turn_right};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -119,169 +127,49 @@ public class User_controller extends AppCompatActivity implements SensorEventLis
 //            requestPermissions(new String[]{Manifest.permission.ACTIVITY_RECOGNITION}, 0);
 //        }
 
-        view = (ImageView) findViewById(R.id.view); // turn left
-        view1 = (ImageView) findViewById(R.id.view1); // go
-        view2 = (ImageView) findViewById(R.id.view2); // stop
-        view3 = (ImageView) findViewById(R.id.view3); // back
-        view4 = (ImageView) findViewById(R.id.view4); // right
-        view5 = (ImageView) findViewById(R.id.view5); // left
-        view6 = (ImageView) findViewById(R.id.view6);
+        for(int i=0;i<7;i++){
+            imgView[i] = (ImageView) findViewById(imgView_id[i]);
+        }
+
+        vaAni[0] = colorAnimationOuter;
+        vaAni[1] = colorAnimationOuter1;
+        vaAni[2] = colorAnimationOuter2;
+        vaAni[3] = colorAnimationOuter3;
+        vaAni[4] = colorAnimationOuter4;
+        vaAni[5] = colorAnimationOuter5;
+        vaAni[6] = colorAnimationOuter6;
+
 
         Integer colorFrom = Color.BLACK;
         Integer colorTo = Color.WHITE;
 
 
-        colorAnimationOuter = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
-        colorAnimationOuter.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-
-            @Override
-            public void onAnimationUpdate(ValueAnimator animator) {
-                view.setBackgroundColor((Integer) animator.getAnimatedValue());
-                if (Integer.parseInt(animator.getAnimatedValue().toString()) == -1) {
-                    view.setColorFilter(R.color.black);
-                } else {
-                    view.setColorFilter(R.color.white);
+        for(int i=0;i<7;i++){
+            final int num = i;
+            vaAni[i] = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
+            vaAni[i].addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(@NonNull ValueAnimator animator) {
+                    imgView[num].setBackgroundColor((Integer) animator.getAnimatedValue());
+                    if (Integer.parseInt(animator.getAnimatedValue().toString()) == -1) {
+                        imgView[num].setColorFilter(R.color.black);
+                    } else {
+                        imgView[num].setColorFilter(R.color.white);
+                    }
                 }
+            });
+            vaAni[i].setRepeatCount(ValueAnimator.INFINITE);
+            vaAni[i].setRepeatMode(ValueAnimator.REVERSE);
+            vaAni[i].setDuration(ord[i]);
 
-            }
-
-        });
-
-
-        colorAnimationOuter1 = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
-        colorAnimationOuter1.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-
-            @Override
-            public void onAnimationUpdate(ValueAnimator animator) {
-//                view5.setBackgroundColor((Integer) animator.getAnimatedValue());
-//                view4.setBackgroundColor((Integer) animator.getAnimatedValue());
-//                view3.setBackgroundColor((Integer) animator.getAnimatedValue());
-                view1.setBackgroundColor((Integer) animator.getAnimatedValue());
-//                Log.e("tttttt",""+Integer.parseInt(animator.getAnimatedValue().toString())) ;
-                if (Integer.parseInt(animator.getAnimatedValue().toString()) == -1) {
-                    view1.setColorFilter(R.color.black);
-//                    Log.e("color","White   " + animator.getAnimatedValue());
-                } else {
-                    view1.setColorFilter(R.color.white);
-//                    Log.e("color","Black    " + animator.getAnimatedValue());
-                }
-
-            }
-
-        });
-
-        colorAnimationOuter2 = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
-        colorAnimationOuter2.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-
-            @Override
-            public void onAnimationUpdate(ValueAnimator animator) {
-                view2.setBackgroundColor((Integer) animator.getAnimatedValue());
-                if (Integer.parseInt(animator.getAnimatedValue().toString()) == -1) {
-                    view2.setColorFilter(R.color.black);
-                } else {
-                    view2.setColorFilter(R.color.white);
-                }
-
-            }
-
-        });
-
-        colorAnimationOuter3 = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
-        colorAnimationOuter3.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-
-            @Override
-            public void onAnimationUpdate(ValueAnimator animator) {
-                view3.setBackgroundColor((Integer) animator.getAnimatedValue());
-                if (Integer.parseInt(animator.getAnimatedValue().toString()) == -1) {
-                    view3.setColorFilter(R.color.black);
-                } else {
-                    view3.setColorFilter(R.color.white);
-                }
-
-            }
-
-        });
-
-        colorAnimationOuter4 = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
-        colorAnimationOuter4.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-
-            @Override
-            public void onAnimationUpdate(ValueAnimator animator) {
-                view4.setBackgroundColor((Integer) animator.getAnimatedValue());
-                if (Integer.parseInt(animator.getAnimatedValue().toString()) == -1) {
-                    view4.setColorFilter(R.color.black);
-                } else {
-                    view4.setColorFilter(R.color.white);
-                }
-
-            }
-
-        });
-
-        colorAnimationOuter5 = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
-        colorAnimationOuter5.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-
-            @Override
-            public void onAnimationUpdate(ValueAnimator animator) {
-                view5.setBackgroundColor((Integer) animator.getAnimatedValue());
-                if (Integer.parseInt(animator.getAnimatedValue().toString()) == -1) {
-                    view5.setColorFilter(R.color.black);
-                } else {
-                    view5.setColorFilter(R.color.white);
-                }
-
-            }
-
-        });
+        }
 
 
-        colorAnimationOuter6 = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
-        colorAnimationOuter6.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
 
-            @Override
-            public void onAnimationUpdate(ValueAnimator animator) {
-                view6.setBackgroundColor((Integer) animator.getAnimatedValue());
-                if (Integer.parseInt(animator.getAnimatedValue().toString()) == -1) {
-                    view6.setColorFilter(R.color.black);
-                } else {
-                    view6.setColorFilter(R.color.white);
-                }
-
-            }
-
-        });
-
-        colorAnimationOuter.setRepeatCount(ValueAnimator.INFINITE);
-        colorAnimationOuter.setRepeatMode(ValueAnimator.REVERSE);
-        colorAnimationOuter.setDuration(turn_left);
-
-        colorAnimationOuter1.setRepeatCount(ValueAnimator.INFINITE);
-        colorAnimationOuter1.setRepeatMode(ValueAnimator.REVERSE);
-        colorAnimationOuter1.setDuration(go);
-
-        colorAnimationOuter2.setRepeatCount(ValueAnimator.INFINITE);
-        colorAnimationOuter2.setRepeatMode(ValueAnimator.REVERSE);
-        colorAnimationOuter2.setDuration(stop);
-
-        colorAnimationOuter3.setRepeatCount(ValueAnimator.INFINITE);
-        colorAnimationOuter3.setRepeatMode(ValueAnimator.REVERSE);
-        colorAnimationOuter3.setDuration(back);
-
-        colorAnimationOuter4.setRepeatCount(ValueAnimator.INFINITE);
-        colorAnimationOuter4.setRepeatMode(ValueAnimator.REVERSE);
-        colorAnimationOuter4.setDuration(right);
-
-        colorAnimationOuter5.setRepeatCount(ValueAnimator.INFINITE);
-        colorAnimationOuter5.setRepeatMode(ValueAnimator.REVERSE);
-        colorAnimationOuter5.setDuration(left);
-
-        colorAnimationOuter6.setRepeatCount(ValueAnimator.INFINITE);
-        colorAnimationOuter6.setRepeatMode(ValueAnimator.REVERSE);
-        colorAnimationOuter6.setDuration(turn_right);
 
         // @TODO animation set
         animatorSet = new AnimatorSet();
-        animatorSet.playTogether(colorAnimationOuter,colorAnimationOuter1, colorAnimationOuter2, colorAnimationOuter3, colorAnimationOuter4, colorAnimationOuter5,colorAnimationOuter6
+        animatorSet.playTogether(vaAni[0],vaAni[1], vaAni[2], vaAni[3], vaAni[4], vaAni[5],vaAni[6]
         );
 
         animatorSet.start();
@@ -349,7 +237,7 @@ public class User_controller extends AppCompatActivity implements SensorEventLis
 
         super.onDestroy( );
 
-        timerCall.cancel();
+//        timerCall.cancel();
     }
 
 
@@ -386,6 +274,15 @@ public class User_controller extends AppCompatActivity implements SensorEventLis
         //tts.setSpeechRate((float) 0.5); //재생속도
         tts.speak(text, TextToSpeech.QUEUE_FLUSH, null);
     }
+
+//    public void click(String value) {
+//        new Thread() {
+//            @Override
+//            public void run() {
+//                sc.move(value);
+//            }
+//        }
+//    }
 
 
 
@@ -616,11 +513,7 @@ class Task1 extends Thread {
 
 
                     }
-//                    else {
-//                        // 다른 응답을 반환한 경우
-//                        // 로그인 실패
-//                        Toast.makeText(User_controller.this, "위치 전송 실패", Toast.LENGTH_SHORT).show();
-//                    }
+
                 }
                 conn.disconnect();
             }
