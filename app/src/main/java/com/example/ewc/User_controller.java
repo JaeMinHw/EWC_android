@@ -64,6 +64,7 @@ public class User_controller extends AppCompatActivity implements SensorEventLis
 
 
 
+    private Button temp;
     private ImageView[] imgView = new ImageView[7];
     private Integer[] imgView_id= {R.id.view, R.id.view1, R.id.view2, R.id.view3, R.id.view4, R.id.view5, R.id.view6};
 
@@ -105,12 +106,14 @@ public class User_controller extends AppCompatActivity implements SensorEventLis
     final int turn_left = 800;
     final int turn_right = 700;
 
+
     Integer ord[] = {turn_left,go,stop,back,right,left,turn_right};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_controller);
+
 
 //        tts = new TextToSpeech(this, this);
 
@@ -139,6 +142,16 @@ public class User_controller extends AppCompatActivity implements SensorEventLis
         vaAni[5] = colorAnimationOuter5;
         vaAni[6] = colorAnimationOuter6;
 
+
+        temp = findViewById(R.id.temp);
+
+        temp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Task1 crash = new Task1();
+                crash.start();
+            }
+        });
 
         Integer colorFrom = Color.BLACK;
         Integer colorTo = Color.WHITE;
@@ -415,8 +428,8 @@ public class User_controller extends AppCompatActivity implements SensorEventLis
         public void onLocationChanged(Location location) {
             // 위치 리스너는 위치정보를 전달할 때 호출되므로 onLocationChanged()메소드 안에 위지청보를 처리를 작업을 구현 해야합니다.
             String provider = location.getProvider();  // 위치정보
-            double longitude = location.getLongitude(); // 위도
-            double latitude = location.getLatitude(); // 경도
+            longitude = location.getLongitude(); // 위도
+            latitude = location.getLatitude(); // 경도
             double altitude = location.getAltitude(); // 고도
             Log.e("tt","위치정보 : " + provider + "\n" + "위도 : " + longitude + "\n" + "경도 : " + latitude + "\n" + "고도 : " + altitude);
         } public void onStatusChanged(String provider, int status, Bundle extras) {
@@ -478,51 +491,54 @@ public class User_controller extends AppCompatActivity implements SensorEventLis
 
     }
 
-}
+
+    class Task1 extends Thread {
+
+        private String str, receiveMsg;
+
+        public void run() {
+            try {
+                URL url = new URL(server_link.link+"crash/"+login_info.id);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                if(conn != null){
+                    conn.setConnectTimeout(10000); // 10초 동안 기다린 후 응답이 없으면 종료
+                    conn.setRequestMethod("GET");
+                    conn.setDoInput(true);
+
+                    int resCode = conn.getResponseCode();
+
+                    if(resCode == HttpURLConnection.HTTP_OK){
+                        BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                        StringBuilder response = new StringBuilder();
+                        String line;
+                        while ((line = in.readLine()) != null) {
+                            response.append(line);
+                        }
+                        in.close();
+
+                        // 응답 데이터 처리
+                        String responseData = response.toString();
+                        if (responseData.equals("success")) {
+                            // 서버에서 success를 반환한 경우
+                            Log.d("crash", "서버에서 success를 반환했습니다.");
+                            Toast.makeText(User_controller.this, "보호자에게 알림을 전송했습니다.", Toast.LENGTH_LONG).show();
 
 
-class Task1 extends Thread {
+                        }
 
-    private String str, receiveMsg;
-
-    public void run() {
-        try {
-            URL url = new URL(server_link.link+"crash/"+login_info.id);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            if(conn != null){
-                conn.setConnectTimeout(10000); // 10초 동안 기다린 후 응답이 없으면 종료
-                conn.setRequestMethod("GET");
-                conn.setDoInput(true);
-
-                int resCode = conn.getResponseCode();
-
-                if(resCode == HttpURLConnection.HTTP_OK){
-                    BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                    StringBuilder response = new StringBuilder();
-                    String line;
-                    while ((line = in.readLine()) != null) {
-                        response.append(line);
                     }
-                    in.close();
-
-                    // 응답 데이터 처리
-                    String responseData = response.toString();
-                    if (responseData.equals("success")) {
-                        // 서버에서 success를 반환한 경우
-                        Log.d("crash", "서버에서 success를 반환했습니다.");
-
-
-                    }
-
+                    conn.disconnect();
                 }
-                conn.disconnect();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
+
+
     }
 
 
 }
+
 
 
