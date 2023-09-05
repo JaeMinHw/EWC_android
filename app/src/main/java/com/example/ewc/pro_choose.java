@@ -18,14 +18,18 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.URISyntaxException;
 import java.net.URL;
+
+import io.socket.client.IO;
+import io.socket.client.Socket;
 
 public class pro_choose extends AppCompatActivity {
 
     Button check_place;
     Button user_view;
     String token;
-
+    private Socket so;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +61,16 @@ public class pro_choose extends AppCompatActivity {
     }
 
     public void user_view() {
-        Intent intent = new Intent(getApplicationContext(), pro_cam.class);
+        Intent intent = new Intent(getApplicationContext(), webview_video.class);
+        so = server_link.socket;
+        try {
+            so = IO.socket(server_link.link);
+            so.connect();
+            so.emit("start_video","start");
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+
         startActivity(intent);
     }
 

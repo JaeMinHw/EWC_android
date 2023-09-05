@@ -25,7 +25,7 @@
     <string name="user_video">사용자 시야 확인</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name = "enroll_device">휠체어 등록</string>
+    <string name="enroll_device">휠체어 등록</string>
     <string name="enroll_de">휠체어 번호</string>
     <string name="enroll_de_text">휠체어 번호를 입력</string>
 

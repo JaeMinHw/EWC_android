@@ -80,11 +80,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
     protected void SignUp() {
-        Intent intent = new Intent(getApplicationContext(), SignUp.class);
+//        Intent intent = new Intent(getApplicationContext(), SignUp.class);
+        Intent intent = new Intent(getApplicationContext(),test_view.class);
         startActivity(intent);
     }
     protected void proSignUp() {
-        Intent intent = new Intent(getApplicationContext(), ProSignup.class);
+        Intent intent = new Intent(getApplicationContext(), webview_video.class);
         startActivity(intent);
     }
 
@@ -95,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void run() {
-            Log.e("IP",""+IP);
+            Log.e("IP1",""+IP);
             try {
                 URL url = new URL(IP);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();

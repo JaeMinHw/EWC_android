@@ -98,10 +98,10 @@ public class User_controller extends AppCompatActivity implements SensorEventLis
     // turn right
     private ValueAnimator colorAnimationOuter6;
 
-    final int go = 500; // 한번 바뀌는데 걸리는 시간 즉 흰색에서 파란색으로 될 때까지의 시간이 500ms
-    final int back = 600;
-    final int left = 400;
-    final int right = 300;
+    final int go = 42; // 한번 바뀌는데 걸리는 시간 즉 흰색에서 파란색으로 될 때까지의 시간이 42ms -> 12HZ
+    final int back = 50;
+    final int left = 58;
+    final int right = 67;
     final int stop = 200;
     final int turn_left = 800;
     final int turn_right = 700;
