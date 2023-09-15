@@ -80,12 +80,13 @@ public class MainActivity extends AppCompatActivity {
 
     }
     protected void SignUp() {
-//        Intent intent = new Intent(getApplicationContext(), SignUp.class);
-        Intent intent = new Intent(getApplicationContext(),test_view.class);
+        Intent intent = new Intent(getApplicationContext(), SignUp.class);
+//        Intent intent = new Intent(getApplicationContext(),test_view.class);
         startActivity(intent);
     }
     protected void proSignUp() {
-        Intent intent = new Intent(getApplicationContext(), webview_video.class);
+        Intent intent = new Intent(getApplicationContext(), ProSignup.class);
+//        Intent intent = new Intent(getApplicationContext(), User_controller.class);
         startActivity(intent);
     }
 
