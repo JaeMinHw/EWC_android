@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1024060182494",
+    "project_id": "brain-ewc",
+    "storage_bucket": "brain-ewc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1024060182494:android:634b157c8efa57d517974f",
+        "android_client_info": {
+          "package_name": "com.example.ewc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1024060182494-v5gbqq5oamfkm6o0pck6k7d009t94793.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAbCqXMbpxAxFQ-yUHcBg0O-UJs188YBI8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1024060182494-v5gbqq5oamfkm6o0pck6k7d009t94793.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
