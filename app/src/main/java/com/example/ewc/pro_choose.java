@@ -61,7 +61,7 @@ public class pro_choose extends AppCompatActivity {
     }
 
     public void user_view() {
-        Intent intent = new Intent(getApplicationContext(), webview_video.class);
+        Intent intent = new Intent(getApplicationContext(), test_view.class);
         so = server_link.socket;
         try {
             so = IO.socket(server_link.link);

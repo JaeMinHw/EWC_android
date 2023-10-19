@@ -6,6 +6,8 @@ import androidx.core.app.ActivityCompat;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -21,6 +23,7 @@ import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.graphics.Color;
 import android.speech.tts.TextToSpeech;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -32,9 +35,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import io.socket.client.IO;
+import io.socket.client.Socket;
+import io.socket.emitter.Emitter;
 
 public class User_controller extends AppCompatActivity implements SensorEventListener{
 
@@ -61,7 +69,7 @@ public class User_controller extends AppCompatActivity implements SensorEventLis
 
     private TextToSpeech tts;
 
-
+    private Socket so;
 
     private Button temp;
     private ImageView[] imgView = new ImageView[6];
@@ -121,6 +129,34 @@ public class User_controller extends AppCompatActivity implements SensorEventLis
                 .getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
         mMagnetometer = mSensorManager
                 .getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+
+
+        so = server_link.socket;
+        try {
+            so = IO.socket(server_link.link);
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+        so.connect();
+
+        so.on("sensor", new Emitter.Listener() {
+            @Override
+            public void call(final Object... args) {
+                Log.e("test","tttt");
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            String sensor_num = args[0].toString();
+                            Toast.makeText(getApplicationContext(), "" + sensor_num,Toast.LENGTH_LONG).show();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+        });
+
 
 //        // 활동 퍼미션 체크
 //        if(ContextCompat.checkSelfPermission(this,
@@ -535,6 +571,8 @@ public class User_controller extends AppCompatActivity implements SensorEventLis
 
 
     }
+
+
 
 
 }

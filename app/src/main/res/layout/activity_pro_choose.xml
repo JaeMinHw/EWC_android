@@ -7,16 +7,16 @@
     tools:context=".pro_choose">
 
     <LinearLayout
-        android:layout_width="413dp"
-        android:layout_height="370dp"
+        android:layout_width="0dp"
+        android:layout_height="342dp"
         android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <Button
             android:id="@+id/check_place"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="1281dp"
+            android:layout_height="458dp"
             android:layout_weight="1"
             android:backgroundTint="#88E48B"
             android:text="@string/check_place"
