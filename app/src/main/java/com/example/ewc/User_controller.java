@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -219,6 +221,37 @@ public class User_controller extends AppCompatActivity implements SensorEventLis
         animatorSet = new AnimatorSet();
         animatorSet.playTogether(vaAni[0],vaAni[1], vaAni[2], vaAni[3], vaAni[4], vaAni[5]
         );
+
+        final int durationOn = 5000; // 5초 동안 애니메이션 실행
+        final int durationOff = 1000; // 1초 동안 애니메이션 정지
+
+        animatorSet.setDuration(durationOn);
+
+        animatorSet.addListener(new AnimatorListenerAdapter() {
+            boolean isPaused = false;
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                if (!isPaused) {
+                    // 1초 동안 애니메이션 일시 중지
+                    for (ValueAnimator va : vaAni) {
+                        va.pause();
+                    }
+                    isPaused = true;
+                    new android.os.Handler().postDelayed(
+                            new Runnable() {
+                                public void run() {
+                                    isPaused = false;
+                                    for (ValueAnimator va : vaAni) {
+                                        va.resume();
+                                    }
+                                    animatorSet.start(); // 애니메이션을 반복합니다.
+                                }
+                            }, durationOff);
+                }
+            }
+        });
 
         animatorSet.start();
 
